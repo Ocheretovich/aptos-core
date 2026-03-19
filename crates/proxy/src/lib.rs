@@ -83,8 +83,11 @@ impl NoProxy {
         }
         let mut ips = Vec::new();
         let mut domains = Vec::new();
-        let parts = raw.split(',');
-        for part in parts {
+        for part in raw.split(',') {
+            let part = part.trim();
+            if part.is_empty() {
+                continue;
+            }
             match part.parse::<IpNet>() {
                 // If we can parse an IP net or address, then use it, otherwise, assume it is a domain
                 Ok(ip) => ips.push(Ip::Network(ip)),
